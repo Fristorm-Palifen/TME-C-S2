@@ -33,6 +33,6 @@
     Q1.9: free(t->tab); à la ligne juste avant free(t);
 
 ### Exercice 2
-    .
+    .Q2.1: Nous avons choisi la 2ème méthode pour avoir moins de mémoire allouée ( 1ère méthode copie tableau)
     
        
