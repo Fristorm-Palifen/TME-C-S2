@@ -33,4 +33,5 @@
     Q1.9: free(t->tab); à la ligne juste avant free(t);
 
 ### Exercice 2
+    .
     
