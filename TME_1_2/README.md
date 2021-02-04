@@ -98,5 +98,29 @@ int main(){
 }
 ```
 
+    Q2.2: 
+    1)
+```C
+int algo1(int *tab, int n){
+    int res=0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (i!=j)
+            {
+                res+=(tab[i]-tab[j])*(tab[i]-tab[j]);
+            }
+            
+        }
+        
+    }
+    return res;
+    
+}
+```
+
+    2)
+
 
        
