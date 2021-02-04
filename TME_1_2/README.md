@@ -35,9 +35,8 @@
 ### Exercice 2
     Q2.1: Nous avons choisi la 2ème méthode pour avoir moins de mémoire allouée ( 1ère méthode copie tableau)
 
-    
-    ```C
-    #include<stdio.h>
+```C
+#include<stdio.h>
 #include<stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -96,6 +95,8 @@ int main(){
 
     desalloue_tableau(tab);
     return 0;
-}```
+}
+```
+
 
        
