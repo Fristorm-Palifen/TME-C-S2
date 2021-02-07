@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include <string.h>
-#include <time.h>
+#include<string.h>
+#include<time.h>
 
 
 void alloue_tableau(int **t, int n){
@@ -47,13 +47,24 @@ int algo1(int *tab, int n){
     
 }
 
+//pas bon
+int algo2(int *tab , int n) {
+    int res=0;
+    for(int i=0; i < n ; i++) {
+        for(int j=0 ; j < n ; j++){
+            res += tab[i] * tab[i] ;
+        }
+    } return res ;
+}
+
 int main(){
     srand(time(NULL));
     int *tab=NULL;
     alloue_tableau(&tab,10);
     remplir_tableau(&tab, 100, 10);
     affiche_tableau(&tab,10);
-    printf("\n\n resultat: %d\n",algo1(tab,10));
+    printf("\n\nresultat: %d\n",algo1(tab,10));
+    printf("\n\nresultat: %d\n",algo2(tab,10));
 
     desalloue_tableau(tab);
     return 0;
