@@ -117,7 +117,7 @@ int main(){
     m = produit_matrice1( mat1 , mat2 , n ) ;
     affiche_matrice( m , n );
 
-    desalloue_matrice( &mat1 , n ); //pb dans cette fonction
+    desalloue_matrice( &mat1 , n ); 
     desalloue_matrice( &mat2 , n );
     desalloue_matrice( &m , n ) ;
 }
