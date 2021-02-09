@@ -57,21 +57,22 @@ int algo1( int **tab, int n ) {
     return 1; 
 }
 
-int algo2(int **tab, int n, int v){
-    int *temp = malloc(v*sizeof(int));
-  
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            if (temp[ tab[i][j] ] == 1){
-                free(temp);
+int algo2(int **tab, int n, int v) {
+    int *m = malloc(v*sizeof(int)) ;
+    for(int i = 0; i < v; i++)
+        m[ i ] = 0;
+    
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if(m[tab[i][j]] != 0) 
                 return 0;
-            }
-            else{
-                temp[ tab[i][j] - 1 ] = 1;
-            }
+            
+            m[tab[i][j]] = 1;
         }
     }
-    free(temp);
+    free(m) ;
+
     return 1;
 }
 
@@ -96,7 +97,7 @@ int **produit_matrice1(int ** m1, int **m2, int n){
 
 int main(){
     srand(time(NULL));
-    int n = 4 , v = 100 ;
+    int n = 10 , v = 100 ;
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
     int **m = NULL, **m2 = NULL ; 
