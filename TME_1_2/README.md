@@ -236,20 +236,22 @@ int algo1( int **tab, int n ) {
     return 1; 
 }
 
-int algo2(int **tab, int n, int v){
-    int *temp = calloc(sizeof(int), v);
-  
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            if (temp[ tab[i][j] - 1 ] == 1){
-                free(temp);
+int algo2(int **tab, int n, int v) {
+    int *m = malloc(v*sizeof(int)) ;
+    for(int i = 0; i < v; i++)
+        m[ i ] = 0;
+    
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if(m[tab[i][j]] != 0) 
                 return 0;
-        }
-        else
-            temp[ tab[i][j] - 1 ] = 1;
+            
+            m[tab[i][j]] = 1;
         }
     }
-    free(temp);
+    free(m) ;
+
     return 1;
 }
 ```
