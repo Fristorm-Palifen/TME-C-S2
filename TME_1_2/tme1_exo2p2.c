@@ -3,24 +3,27 @@
 #include<string.h>
 #include<time.h>
 
-void alloue_matrice( int **tab , int n ){
-    *tab = (int *)malloc( n *sizeof(int));
+int ** alloue_matrice(int n ){
+    int **tab = malloc( n *sizeof(int*));
     for(int i = 0 ; i < n ; i++ ){
-        tab[i] = (int *)malloc( n * sizeof(int));
+        tab[i] = (int *)malloc( n * sizeof(int *));
     }
+    return tab;
 }
 
 //fonction pas bonne
-void desalloue_matrice( int **tab , int n ){
+void desalloue_matrice( int ***tab , int n ){
     for(int i=0 ; i<n ;i++){
-        free(tab[i]);
-    }free(*tab);
+        int *temp=(*tab)[i];
+        free(temp);
+    }
+    free(*tab);
 }
 
 void remplir_matrice( int **tab , int n , int v ){
     for(int i = 0 ; i < n ; i++){
         for( int j = 0 ; j < n ; j++ ){
-            tab[i][j] = rand()%(v) ;
+            tab[i][j] = rand()%v ;
         }
     }
 }
@@ -80,8 +83,8 @@ int algo2( int **tab, int n , int v ) {
 }
 
 int **produit_matrice1(int ** m1, int **m2, int n){
-    int **res = NULL ;
-    alloue_matrice( res , n ) ;
+    int **res = alloue_matrice(n) ;
+    
 
     for (int i = 0 ; i < n ; i++)
 	{
@@ -99,11 +102,10 @@ int **produit_matrice1(int ** m1, int **m2, int n){
 
 int main(){
     srand(time(NULL));
-    int **mat1 = NULL , **mat2 = NULL , **m ; 
     int n = 4 , v = 100 ;
-
-    alloue_matrice( mat1 , n ) ;
-    alloue_matrice( mat2 , n ) ;
+    int **mat1 = alloue_matrice(n);
+    int **mat2 = alloue_matrice(n) ;
+    int **m = NULL; 
 
     remplir_matrice( mat1 , n , v );
     remplir_matrice( mat2 , n ,v ) ;
@@ -115,8 +117,8 @@ int main(){
     m = produit_matrice1( mat1 , mat2 , n ) ;
     affiche_matrice( m , n );
 
-    desalloue_matrice( mat1 , n ); //pb dans cette fonction
-    desalloue_matrice( mat2 , n );
-    desalloue_matrice( m , n ) ;
+    desalloue_matrice( &mat1 , n ); //pb dans cette fonction
+    desalloue_matrice( &mat2 , n );
+    desalloue_matrice( &m , n ) ;
 }
 
