@@ -111,5 +111,6 @@ int main(){
         desalloue_tableau(t);
         n++;
     }
+    fclose(f) ;
     return 0;
 }
