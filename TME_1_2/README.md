@@ -54,6 +54,7 @@
 #include<stdlib.h>
 #include <string.h>
 #include <time.h>
+#define N 20
 
 
 void alloue_tableau(int **t, int n){
@@ -76,18 +77,19 @@ void remplir_tableau(int **tab, int v, int n){
 void affiche_tableau(int **t, int n){
     for (int i=0; i<n; i++)
     {
-        printf("%d\n",(*t)[i]);
+        printf("tab[%d] = %d\n", i , (*t)[i]);
     }
     
 }
 
 int main(){
     srand(time(NULL));
-    int *tab=NULL;
-    alloue_tableau(&tab,10);
-    remplir_tableau(&tab, 100, 10);
-    affiche_tableau(&tab,10);
-    printf("\n\n resultat: %d\n",algo1(tab,10));
+    int n = 500, v = 100;
+
+    int *tab = NULL ;
+    alloue_tableau(&tab, n );
+    remplir_tableau(&tab, v, n );
+    affiche_tableau(&tab, n );
 
     desalloue_tableau(tab);
     return 0;
@@ -98,54 +100,87 @@ int main(){
     1)
 ```C
 int algo1(int *tab, int n){
-    int res=0;
+    int res = 0;
     for (int i = 0; i < n; i++)
-    {
         for (int j = 0; j < n; j++)
-        {
-            if (i!=j)
-            {
-                res+=(tab[i]-tab[j])*(tab[i]-tab[j]);
-            }
-            
-        }
-        
+            res += pcarre( tab[i] - tab[j] ) ;
+    return res ;
+    
+}
+
+int algo2(int *tab, int n){
+    int res = 0;
+    int sommeCarre = 0;
+
+    for(int i = 0; i < n; i++) {
+        res += tab[ i ];
+        sommeCarre += tab[ i ] * tab[ i ];
     }
-    return res;
+
+    return 2 * n * sommeCarre - 2 * pcarre(res) ;
     
 }
 ```
 
-    2) PAS REUSSI A TROUVER LE 2EME ALGO
 
 
 
-    Q2.3:  COMPARER LES 2 ALGO
+    Q2.3:  
+```C
+    int *t = NULL ;
+    FILE *f=fopen("sortie_vitesse.txt", "w");
+    for(int i = 0; i < N; i++) {
 
-    Q2.4: PROBLEME ALLOCATION ( dsl jsuis pas fort en 2D, alloue_matrice fonctionne elle alloue 16 bytes mais desalloue_matrice ne fonctionne pas )
+        alloue_tableau(&t , n);
+        remplir_tableau(&t, v, n);
+
+        temps_initial1 = clock();
+        algo1(t, n);
+        temps_final1 = clock();
+        temps1 = ((double) (temps_final1 - temps_initial1)) / CLOCKS_PER_SEC;
+
+        temps_initial2 = clock();
+        algo2(t, n);
+        temps_final2 = clock();
+        temps2 = ((double) (temps_final2 - temps_initial2)) / CLOCKS_PER_SEC;
+
+        fprintf(f, "%d %f %f\n", n, temps1, temps2);
+
+        desalloue_tableau(t);
+        n++;
+    }
+    fclose(f) ;
+```
+    METTRE LES GRAPHES
+
+    Q2.4:
 ```C
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
+#define N 20
 
-void alloue_matrice( int **tab , int n ){
-    *tab = (int *)malloc( n *sizeof(int));
+int ** alloue_matrice(int n ){
+    int **tab = malloc( n *sizeof(int*));
     for(int i = 0 ; i < n ; i++ ){
-        tab[i] = (int *)malloc( n * sizeof(int));
+        tab[i] = (int *)malloc( n * sizeof(int *));
     }
+    return tab;
 }
 
-void desalloue_matrice( int **tab , int n ){
+void desalloue_matrice( int ***tab , int n ){
     for(int i=0 ; i<n ;i++){
-        free(tab[i]);
-    }free(*tab);
+        int *temp=(*tab)[i];
+        free(temp);
+    }
+    free(*tab);
 }
 
 void remplir_matrice( int **tab , int n , int v ){
     for(int i = 0 ; i < n ; i++){
         for( int j = 0 ; j < n ; j++ ){
-            tab[i][j] = rand()%(v) ;
+            tab[i][j] = rand()%v ;
         }
     }
 }
@@ -162,27 +197,35 @@ void affiche_matrice( int **tab , int n ){
 
 int main(){
     srand(time(NULL));
-    int **tab = NULL ; 
     int n = 4 , v = 100 ;
-    alloue_matrice( tab , n ) ;
-    remplir_matrice( tab , n , v );
-    affiche_matrice( tab , n ) ;
+    int **mat1 = alloue_matrice(n);
+    int **mat2 = alloue_matrice(n) ;
 
-    desalloue_matrice( tab , n ); //pb dans cette fonction
+    remplir_matrice( mat1 , n , v );
+    remplir_matrice( mat2 , n ,v ) ;
+
+    printf("\nMatrice 1 :\n");
+    affiche_matrice( mat1 , n ) ;
+    printf("\nMatrice 2 : \n");
+    affiche_matrice( mat2 , n ) ;
+
+    desalloue_matrice( &mat1 , n ); 
+    desalloue_matrice( &mat2 , n );
 }
 ```
 
-    Q2.5: PRB 2EME ALGO ( j'ai pas reussi la meilleure complexité )
+    Q2.5: 
 ```C
 int algo1( int **tab, int n ) {
-    for( int i =0 ; i<n ;i++ ){
-        for( int j=0 ;j<n ;j++){
 
-            for( int i2 = 0 ; i2 < n ; i2++){
-                for( int j2 = 0 ; j2 < n ; j2++){
+    for (int i1 = 0; i1 < n; i1++){
+        for (int j1 = 0; j1 < n; j1++){
 
-                    if( tab[i][j] == tab[i2][j2] && i!=i2 && j!=j2){
-                        return 0 ;
+            for (int i2 = 0; i2 < n; i2++){
+                for (int j2 = 0; j2 < n; j2++){
+
+                    if ((i1 != i2 || j1 != j2) && (tab[i1][j1] == tab[i2][j2])){
+                        return 0; 
                     }
 
                 }
@@ -190,32 +233,24 @@ int algo1( int **tab, int n ) {
 
         }
     }
-    return 1 ;
+    return 1; 
 }
 
-int algo2( int **tab, int n , int v ) {
-    for( int i =0 ; i<n ;i++ ){
-        for( int j=0 ;j<n ;j++){
-
-            if( tab[i][j] < v ){
-                
-                for( int i2 = 0 ; i2 < n ; i2++){
-                    for( int j2 = 0 ; j2 < n ; j2++){
-
-                        if( tab[i][j] == tab[i2][j2] && i!=i2 && j!=j2 ){
-                            return 0 ;
-                        }
-
-                    }
-                }
-
-            }else{
-                return 0 ;
-            }
-
+int algo2(int **tab, int n, int v){
+    int *temp = calloc(sizeof(int), v);
+  
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            if (temp[ tab[i][j] - 1 ] == 1){
+                free(temp);
+                return 0;
+        }
+        else
+            temp[ tab[i][j] - 1 ] = 1;
         }
     }
-    return 1 ;
+    free(temp);
+    return 1;
 }
 ```
 
@@ -237,4 +272,31 @@ int **produit_matrice1(int ** m1, int **m2, int n){
 	}
     return res ;
 }
+```
+
+
+    main :
+```C
+    FILE *f=fopen("sortie_vitesse_differents.txt", "w");
+    for(int i = 0; i < N; i++) {
+
+        int **t = alloue_matrice( n ) ;
+        remplir_matrice(t , n , v);
+
+        temps_initial1 = clock() ;
+        algo1(t, n );
+        temps_final1 = clock() ;
+        temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
+
+        temps_initial2 = clock() ;
+        algo2(t , n, v ) ;
+        temps_final2 = clock() ;
+        temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
+
+        fprintf(f, "%d %f %f\n", n, temps1, temps2);
+
+        desalloue_matrice( &t , n );
+        n++;
+    }
+    fclose(f) ;
 ```
