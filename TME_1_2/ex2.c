@@ -61,10 +61,6 @@ int main(){
     double temps1, temps2 ;
     int n = 500, v = 100;
 
-
-
-
-
     int *tab = NULL ;
     alloue_tableau(&tab, n );
     remplir_tableau(&tab, v, n );
