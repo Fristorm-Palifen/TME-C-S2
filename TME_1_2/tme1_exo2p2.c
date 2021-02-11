@@ -83,21 +83,41 @@ typedef struct trianglaire{
   int orientation ; // 1=sup , 0=inf
 }Matrice_triangulaire ;
 
-Matrice_triangulaire *allouer_matT(int n, int o){
+Matrice_triangulaire *allouer_matT(int n, int o ){
   Matrice_triangulaire *mt = (Matrice_triangulaire *)malloc(sizeof(Matrice_triangulaire));
   mt->orientation = o ;
   mt->taille = n ;
   int **mat = (int **)malloc(n*sizeof(int *)) ;
   if( o == 1 ){
-    for(int i = 0 ; i < mt->taille ; i++ ){
+    for(int i = 0 ; i < (mt->taille) ; i++ ){
       mat[i] = (int *)malloc((n-i)*sizeof(int)) ;
     }
   }else{
-    for(int i = 0 ; i < mt->taille ; i++ ){
+    for(int i = 0 ; i < (mt->taille) ; i++ ){
       mat[i] = (int *)malloc((i+1)*sizeof(int)) ;
     }
   }mt->matrice = mat ;
   return mt ;
+}
+
+void remplir_Sup(int **m, int n, int v){
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++){
+      if (i > j)
+        m[i][j] = 0;
+      else
+        m[i][j] = (int)(rand() % v);
+    }
+}
+
+void remplir_Inf(int **m, int n, int v){
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++){
+      if (i < j)
+        m[i][j] = 0;
+      else
+        m[i][j] = (int)(rand() % v);
+    }
 }
 
 
@@ -116,23 +136,23 @@ int **produit_matrice1(int ** m1, int **m2, int n){
 	}
     return res ;
 }
-/*
+
 int **produit_matrice2(int **sup, int **inf, int n ) {
 
     int **res = alloue_matrice(n);
-    if(!prod){
+    if(!res){
       return NULL;
     }
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
-            for(; k < n; k++)
-                prod[i][j] += sup[i][k] * inf[k][j];
+            for(int k = i ; k < n; k++)
+                res[i][j] += sup[i][k] * inf[k][j];
         } 
     }
 
     return res;
-}*/
+}
 
 
 int main(){
@@ -141,8 +161,6 @@ int main(){
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
     int **m = NULL, **m2 = NULL ; 
-    //Matrice_triangulaire *tSup = allouer_matT( n , 1 ) ;
-    //Matrice_triangulaire *tInf = allouer_matT( n , 0 ) ;
 
     remplir_matrice( mat1 , n , v );
     remplir_matrice( mat2 , n ,v ) ;
@@ -155,10 +173,27 @@ int main(){
     printf("\nProduit de mat1 et mat2 :\n");
     m = produit_matrice1( mat1 , mat2 , n ) ;
     affiche_matrice( m , n );
-
+    /*
     printf("\nProduit de mat2 et mat1 :\n");
     m2 = produit_matrice1( mat2 , mat1 , n ) ;
-    affiche_matrice( m2 , n );
+    affiche_matrice( m2 , n );*/
+
+    remplir_Sup( mat1 , n , v ) ;
+    remplir_Inf( mat2 , n , v ) ;
+    int **m_triangulaire = NULL ;
+    /*
+    printf("\nPassage aux matrices trianglaire :\n") ;
+
+    printf("\nMatrice 1 :\n");
+    affiche_matrice( mat1 , n ) ;
+    printf("\nMatrice 2 : \n");
+    affiche_matrice( mat2 , n ) ;*/
+
+    printf("\nProduit de mat1 et mat2 :\n");
+    m_triangulaire = produit_matrice2( mat1 , mat2 , n ) ;
+    affiche_matrice( m_triangulaire , n );
+    
+
 
     if ( algo1( mat1 , n ) == 1 ){
         printf("\nTous les elements de mat1 sont différents\n");
@@ -229,8 +264,5 @@ int main(){
 
     return 0 ;
     
-
-
-
 }
 
