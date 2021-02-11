@@ -256,7 +256,7 @@ int main(){
 
         fprintf(f, "%d %f %f\n", n, temps1, temps2);
 
-        //desalloue_matrice( &t , n );
+        desalloue_matrice( &t , n );
         n++;
     }
     fclose(f) ;
