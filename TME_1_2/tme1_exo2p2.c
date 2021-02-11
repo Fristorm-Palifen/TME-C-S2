@@ -23,7 +23,7 @@ void desalloue_matrice( int ***tab , int n ){
 void remplir_matrice( int **tab , int n , int v ){
     for(int i = 0 ; i < n ; i++){
         for( int j = 0 ; j < n ; j++ ){
-            tab[i][j] = rand()%v ;
+            tab[i][j] = rand()%v;
         }
     }
 }
@@ -77,11 +77,34 @@ int algo2(int **tab, int n, int v) {
 }
 
 
-int **produit_matrice1(int ** m1, int **m2, int n){
-    int **res = alloue_matrice(n) ;
-    
+typedef struct trianglaire{
+  int **matrice ;
+  int taille ;
+  int orientation ; // 1=sup , 0=inf
+}Matrice_triangulaire ;
 
-    for (int i = 0 ; i < n ; i++)
+Matrice_triangulaire *allouer_matT(int n, int o){
+  Matrice_triangulaire *mt = (Matrice_triangulaire)malloc(sizeof(Matrice_triangulaire));
+  mt->orientation = o ;
+  mt->taille = n ;
+  int **mat = (int **)malloc(n*sizeof(int *)) ;
+  if( o == 1 ){
+    for(int i = 0 ; i < mt->taille ; i++ ){
+      mat[i] = (int *)malloc((n-i)*sizeof(int)) ;
+    }
+  }else{
+    for(int i = 0 ; i < mt->taille ; i++ ){
+      mat[i] = (int *)malloc((i+1)*sizeof(int)) ;
+    }
+  }mt->matrice = mat ;
+  return mt ;
+}
+
+
+int **produit_matrice1(int ** m1, int **m2, int n){
+  int **res = alloue_matrice(n) ;
+    
+  for (int i = 0 ; i < n ; i++)
 	{
 		for (int j = 0 ; j < n ; j++)
 		{
@@ -94,6 +117,23 @@ int **produit_matrice1(int ** m1, int **m2, int n){
     return res ;
 }
 
+int **produit_matrice2(int **m1, int **m2, int n){
+  int **res = alloue_matrice(n) ;
+
+  for (int i = 0; i < n; i++){
+
+    for (int j = 0; j < n; j++){
+
+      for (int k = i; k < n; k++){
+        res[i][j] += m1[i][k] * m2[k][j];
+      }
+
+    }
+
+  }
+  return res ;
+}
+
 
 int main(){
     srand(time(NULL));
@@ -101,6 +141,8 @@ int main(){
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
     int **m = NULL, **m2 = NULL ; 
+    Matrice_triangulaire *tSup = allouer_matT( n , 1 ) ;
+    Matrice_triangulaire *tInf = allouer_matT( n , 0 ) ;
 
     remplir_matrice( mat1 , n , v );
     remplir_matrice( mat2 , n ,v ) ;
