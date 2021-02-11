@@ -84,7 +84,7 @@ typedef struct trianglaire{
 }Matrice_triangulaire ;
 
 Matrice_triangulaire *allouer_matT(int n, int o){
-  Matrice_triangulaire *mt = (Matrice_triangulaire)malloc(sizeof(Matrice_triangulaire));
+  Matrice_triangulaire *mt = (Matrice_triangulaire *)malloc(sizeof(Matrice_triangulaire));
   mt->orientation = o ;
   mt->taille = n ;
   int **mat = (int **)malloc(n*sizeof(int *)) ;
@@ -116,23 +116,23 @@ int **produit_matrice1(int ** m1, int **m2, int n){
 	}
     return res ;
 }
+/*
+int **produit_matrice2(int **sup, int **inf, int n ) {
 
-int **produit_matrice2(int **sup, int **inf, int m, int n, int p) {
+    int **res = alloue_matrice(n);
+    if(!prod){
+      return NULL;
+    }
 
-    int **prod = alloue_matrice(m, p);
-    if(!prod) return NULL;
-
-    for(int i = 0; i < m; i++) {
-        for(int j = 0; j < p; j++) {
-            prod[i][j] = 0;
-            int k = i < j ? j : i;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
             for(; k < n; k++)
                 prod[i][j] += sup[i][k] * inf[k][j];
         } 
     }
 
-    return prod;
-}
+    return res;
+}*/
 
 
 int main(){
@@ -141,8 +141,8 @@ int main(){
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
     int **m = NULL, **m2 = NULL ; 
-    Matrice_triangulaire *tSup = allouer_matT( n , 1 ) ;
-    Matrice_triangulaire *tInf = allouer_matT( n , 0 ) ;
+    //Matrice_triangulaire *tSup = allouer_matT( n , 1 ) ;
+    //Matrice_triangulaire *tInf = allouer_matT( n , 0 ) ;
 
     remplir_matrice( mat1 , n , v );
     remplir_matrice( mat2 , n ,v ) ;
