@@ -235,7 +235,6 @@ int main(){
         n++;
     }
     fclose(f) ;
-    free(f);
 
     FILE *f2 = fopen("sortie_vitesse_prodMat.txt", "w");
     for(int i = 0 ; i < N ; i++ ){
@@ -266,7 +265,6 @@ int main(){
       n++;
     }
     fclose( f2 ) ;
-    free(f2);
 
 
     return 0 ;
