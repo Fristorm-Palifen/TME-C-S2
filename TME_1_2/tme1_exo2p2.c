@@ -4,7 +4,7 @@
 #include<time.h>
 #define N 20
 
-int ** alloue_matrice(int n ){
+int **alloue_matrice(int n ){
     int **tab = malloc( n *sizeof(int*));
     for(int i = 0 ; i < n ; i++ ){
         tab[i] = (int *)malloc( n * sizeof(int *));
@@ -173,21 +173,21 @@ int main(){
     printf("\nProduit de mat1 et mat2 :\n");
     m = produit_matrice1( mat1 , mat2 , n ) ;
     affiche_matrice( m , n );
-    /*
+    
     printf("\nProduit de mat2 et mat1 :\n");
     m2 = produit_matrice1( mat2 , mat1 , n ) ;
-    affiche_matrice( m2 , n );*/
+    affiche_matrice( m2 , n ) ;
 
     remplir_Sup( mat1 , n , v ) ;
     remplir_Inf( mat2 , n , v ) ;
     int **m_triangulaire = NULL ;
-    /*
+    
     printf("\nPassage aux matrices trianglaire :\n") ;
 
     printf("\nMatrice 1 :\n");
     affiche_matrice( mat1 , n ) ;
     printf("\nMatrice 2 : \n");
-    affiche_matrice( mat2 , n ) ;*/
+    affiche_matrice( mat2 , n ) ;
 
     printf("\nProduit de mat1 et mat2 :\n");
     m_triangulaire = produit_matrice2( mat1 , mat2 , n ) ;
@@ -256,7 +256,7 @@ int main(){
 
         fprintf(f, "%d %f %f\n", n, temps1, temps2);
 
-        desalloue_matrice( &t , n );
+        //desalloue_matrice( &t , n );
         n++;
     }
     fclose(f) ;
