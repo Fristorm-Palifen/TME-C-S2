@@ -77,46 +77,19 @@ int algo2(int **tab, int n, int v) {
 }
 
 
-typedef struct trianglaire{
-  int **matrice ;
-  int taille ;
-  int orientation ; // 1=sup , 0=inf
-}Matrice_triangulaire ;
-
-Matrice_triangulaire *allouer_matT(int n, int o ){
-  Matrice_triangulaire *mt = (Matrice_triangulaire *)malloc(sizeof(Matrice_triangulaire));
-  mt->orientation = o ;
-  mt->taille = n ;
-  int **mat = (int **)malloc(n*sizeof(int *)) ;
-  if( o == 1 ){
-    for(int i = 0 ; i < (mt->taille) ; i++ ){
-      mat[i] = (int *)malloc((n-i)*sizeof(int)) ;
-    }
-  }else{
-    for(int i = 0 ; i < (mt->taille) ; i++ ){
-      mat[i] = (int *)malloc((i+1)*sizeof(int)) ;
-    }
-  }mt->matrice = mat ;
-  return mt ;
-}
-
-void remplir_Sup(int **m, int n, int v){
+void remplir_Sup(int **m, int n ){
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++){
       if (i > j)
         m[i][j] = 0;
-      else
-        m[i][j] = (int)(rand() % v);
     }
 }
 
-void remplir_Inf(int **m, int n, int v){
+void remplir_Inf(int **m, int n ){
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++){
       if (i < j)
         m[i][j] = 0;
-      else
-        m[i][j] = (int)(rand() % v);
     }
 }
 
@@ -177,21 +150,6 @@ int main(){
     printf("\nProduit de mat2 et mat1 :\n");
     m2 = produit_matrice1( mat2 , mat1 , n ) ;
     affiche_matrice( m2 , n ) ;
-
-    remplir_Sup( mat1 , n , v ) ;
-    remplir_Inf( mat2 , n , v ) ;
-    int **m_triangulaire = NULL ;
-    
-    printf("\nPassage aux matrices trianglaire :\n") ;
-
-    printf("\nMatrice 1 :\n");
-    affiche_matrice( mat1 , n ) ;
-    printf("\nMatrice 2 : \n");
-    affiche_matrice( mat2 , n ) ;
-
-    printf("\nProduit de mat1 et mat2 :\n");
-    m_triangulaire = produit_matrice2( mat1 , mat2 , n ) ;
-    affiche_matrice( m_triangulaire , n );
     
 
 
@@ -227,39 +185,86 @@ int main(){
     temps_final2 = clock() ;
     temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
 
+
+    printf("\n\nCPU 1 : %f\n", temps1 );
+    printf("\n\nCPU 2 : %f\n", temps2 );
+
+
+    remplir_Sup( mat1 , n ) ;
+    remplir_Inf( mat2 , n ) ;
+    int **m_triangulaire = NULL ;
+    
+    printf("\nPassage aux matrices trianglaire :\n") ;
+
+    printf("\nMatrice 1 :\n");
+    affiche_matrice( mat1 , n ) ;
+    printf("\nMatrice 2 : \n");
+    affiche_matrice( mat2 , n ) ;
+
+    printf("\nProduit de mat1 et mat2 :\n");
+    m_triangulaire = produit_matrice2( mat1 , mat2 , n ) ;
+    affiche_matrice( m_triangulaire , n );
+
     desalloue_matrice( &mat1 , n ); 
     desalloue_matrice( &mat2 , n );
     desalloue_matrice( &m , n ) ;
     desalloue_matrice( &m2 , n ) ;
-
-
-    printf("\n\nCPU 1 : %f\n", temps1 );
-    printf("\n\nCPU 2 : %f\n", temps2 );
+    desalloue_matrice( &m_triangulaire , n ) ;
 
 
 
     FILE *f=fopen("sortie_vitesse_differents.txt", "w");
     for(int i = 0; i < N; i++) {
 
-        int **t = alloue_matrice( n ) ;
-        remplir_matrice(t , n , v);
+        mat1 = alloue_matrice( n ) ;
+        remplir_matrice(mat1 , n , v);
 
         temps_initial1 = clock() ;
-        algo1(t, n );
+        algo1( mat1 , n );
         temps_final1 = clock() ;
         temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
 
         temps_initial2 = clock() ;
-        algo2(t , n, v ) ;
+        algo2( mat1 , n, v ) ;
         temps_final2 = clock() ;
         temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
 
         fprintf(f, "%d %f %f\n", n, temps1, temps2);
 
-        desalloue_matrice( &t , n );
+        desalloue_matrice( &mat1 , n );
         n++;
     }
     fclose(f) ;
+
+    FILE *f2 = fopen("sortie_vitesse_prodMat.txt", "w");
+    for(int i = 0 ; i < N ; i++ ){
+      mat1 = alloue_matrice( n ) ;
+      mat2 = alloue_matrice( n ) ;
+      remplir_matrice( mat1 , n , v);
+      remplir_matrice( mat2 , n , v );
+
+      temps_initial1 = clock() ;
+      m = produit_matrice1( mat1 , mat2 , n );
+      temps_final1 = clock() ;
+      temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
+
+      remplir_Sup( mat1 , n ) ; 
+      remplir_Inf( mat2 , n ) ;
+
+      temps_initial2 = clock() ;
+      m2 = produit_matrice2( mat1 , mat2 , n ) ;
+      temps_final2 = clock() ;
+      temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
+
+      fprintf(f, "%d %f %f\n", n, temps1, temps2);
+
+      desalloue_matrice( &mat1 , n );
+      desalloue_matrice( &mat2 , n );
+      desalloue_matrice( &m , n );
+      desalloue_matrice( &m2 , n );
+      n++;
+    }
+    fclose( f2 ) ;
 
 
     return 0 ;
