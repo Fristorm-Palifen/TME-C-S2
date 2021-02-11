@@ -117,21 +117,21 @@ int **produit_matrice1(int ** m1, int **m2, int n){
     return res ;
 }
 
-int **produit_matrice2(int **m1, int **m2, int n){
-  int **res = alloue_matrice(n) ;
+int **produit_matrice2(int **sup, int **inf, int m, int n, int p) {
 
-  for (int i = 0; i < n; i++){
+    int **prod = alloue_matrice(m, p);
+    if(!prod) return NULL;
 
-    for (int j = 0; j < n; j++){
-
-      for (int k = i; k < n; k++){
-        res[i][j] += m1[i][k] * m2[k][j];
-      }
-
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < p; j++) {
+            prod[i][j] = 0;
+            int k = i < j ? j : i;
+            for(; k < n; k++)
+                prod[i][j] += sup[i][k] * inf[k][j];
+        } 
     }
 
-  }
-  return res ;
+    return prod;
 }
 
 
