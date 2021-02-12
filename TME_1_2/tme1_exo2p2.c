@@ -152,7 +152,6 @@ int main(){
     affiche_matrice( m2 , n ) ;
     
 
-
     if ( algo1( mat1 , n ) == 1 ){
         printf("\nTous les elements de mat1 sont différents\n");
     }else{
@@ -169,7 +168,6 @@ int main(){
     }else{
         printf("Les éléments de mat2 ne sont pas tous différents\n");
     }
-
 
 
     unsigned long temps_initial1, temps_initial2, temps_final1, temps_final2 ;
