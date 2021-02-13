@@ -31,7 +31,7 @@ void remplir_matrice( int **tab , int n , int v ){
 void affiche_matrice( int **tab , int n ){
     for( int i = 0 ; i < n ; i++ ){
         for( int j = 0 ; j < n ; j++ ){
-            printf("%d ", tab[i][j] );
+            printf("%5d ", tab[i][j] );
         }
         printf("\n");
     }
@@ -65,8 +65,9 @@ int algo2(int **tab, int n, int v) {
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
-            if(m[tab[i][j]] != 0) 
+            if(m[tab[i][j]] != 0) {
                 return 0;
+            }
             
             m[tab[i][j]] = 1;
         }
@@ -92,8 +93,17 @@ void remplir_Inf(int **m, int n ){
         m[i][j] = 0;
     }
 }
-
-
+int **produit_matrice1(int **tab1, int **tab2, int n){
+  int **res= alloue_matrice( n ) ;
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++){
+      res[i][j]=0;
+      for (int k = 0; k < n; k++)
+        res[i][j] += tab1[i][k] * tab2[k][j];
+    }
+  return res ;
+}
+/*
 int **produit_matrice1(int ** m1, int **m2, int n){
   int **res = alloue_matrice(n) ;
     
@@ -110,6 +120,7 @@ int **produit_matrice1(int ** m1, int **m2, int n){
     return res ;
 }
 
+
 int **produit_matrice2(int **sup, int **inf, int n ) {
 
     int **res = alloue_matrice(n);
@@ -125,12 +136,22 @@ int **produit_matrice2(int **sup, int **inf, int n ) {
     }
 
     return res;
+}*/
+int  **produit_matrice2(int **tab1, int **tab2, int n){
+  int **res = alloue_matrice( n ) ;
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++){
+      res[i][j]=0;
+      for (int k = i; k < n; k++)
+        res[i][j] += tab1[i][k] * tab2[k][j];
+    }
+  return res ;
 }
 
 
 int main(){
     srand(time(NULL));
-    int n = 10 , v = 100 ;
+    int n = 4 , v = 100 ;
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
     int **m = NULL, **m2 = NULL ; 
@@ -142,15 +163,6 @@ int main(){
     affiche_matrice( mat1 , n ) ;
     printf("\nMatrice 2 : \n");
     affiche_matrice( mat2 , n ) ;
-
-    printf("\nProduit de mat1 et mat2 :\n");
-    m = produit_matrice1( mat1 , mat2 , n ) ;
-    affiche_matrice( m , n );
-    
-    printf("\nProduit de mat2 et mat1 :\n");
-    m2 = produit_matrice1( mat2 , mat1 , n ) ;
-    affiche_matrice( m2 , n ) ;
-    
 
     if ( algo1( mat1 , n ) == 1 ){
         printf("\nTous les elements de mat1 sont différents\n");
@@ -168,6 +180,14 @@ int main(){
     }else{
         printf("Les éléments de mat2 ne sont pas tous différents\n");
     }
+
+    printf("\nProduit de mat1 et mat2 :\n");
+    m = produit_matrice1( mat1 , mat2 , n ) ;
+    affiche_matrice( m , n );
+    
+    printf("\nProduit de mat2 et mat1 :\n");
+    m2 = produit_matrice1( mat2 , mat1 , n ) ;
+    affiche_matrice( m2 , n ) ;
 
 
     unsigned long temps_initial1, temps_initial2, temps_final1, temps_final2 ;
@@ -199,7 +219,11 @@ int main(){
     printf("\nMatrice 2 : \n");
     affiche_matrice( mat2 , n ) ;
 
-    printf("\nProduit de mat1 et mat2 :\n");
+    printf("\nProduit 1 de mat1 et mat2 :\n");
+    m_triangulaire = produit_matrice1( mat1, mat2, n) ;
+    affiche_matrice( m_triangulaire , n ) ;
+
+    printf("\nProduit 2 de mat1 et mat2 :\n");
     m_triangulaire = produit_matrice2( mat1 , mat2 , n ) ;
     affiche_matrice( m_triangulaire , n );
 
@@ -208,6 +232,7 @@ int main(){
     desalloue_matrice( &m , n ) ;
     desalloue_matrice( &m2 , n ) ;
     desalloue_matrice( &m_triangulaire , n ) ;
+    
 
 
 
