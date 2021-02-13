@@ -103,40 +103,7 @@ int **produit_matrice1(int **tab1, int **tab2, int n){
     }
   return res ;
 }
-/*
-int **produit_matrice1(int ** m1, int **m2, int n){
-  int **res = alloue_matrice(n) ;
-    
-  for (int i = 0 ; i < n ; i++)
-	{
-		for (int j = 0 ; j < n ; j++)
-		{
-			for (int k = 0 ; k < n ; k++)
-			{
-				res[i][j] += m1[i][k] * m2[k][j] ;
-			}
-		}
-	}
-    return res ;
-}
 
-
-int **produit_matrice2(int **sup, int **inf, int n ) {
-
-    int **res = alloue_matrice(n);
-    if(!res){
-      return NULL;
-    }
-
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            for(int k = i ; k < n; k++)
-                res[i][j] += sup[i][k] * inf[k][j];
-        } 
-    }
-
-    return res;
-}*/
 int  **produit_matrice2(int **tab1, int **tab2, int n){
   int **res = alloue_matrice( n ) ;
   for (int i = 0; i < n; i++)
@@ -148,9 +115,60 @@ int  **produit_matrice2(int **tab1, int **tab2, int n){
   return res ;
 }
 
+int equals( int **mt1, int **mt2, int n) {
+    for(int i =0; i<n;i++) {
+        for (int j = 0; j < n; j++)
+        {
+            if (mt1[i][j]!=mt2[i][j]){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
 
 int main(){
     srand(time(NULL));
+    //Jeux de test//
+    int **mtest1 = alloue_matrice(15);
+    int **mtest2 = alloue_matrice(15);
+    int **mtesta = NULL; 
+    int **mtestb = NULL;
+    remplir_matrice( mtest1 , 15 , 200 );
+    remplir_matrice( mtest2 , 15 ,200 ) ;
+    if (equals(mtest1,mtest1,15)!=1) //verification de l'algorithme de verif par experience temoin
+    {
+        printf("L'algorithme de verification est erroné!\n");
+        desalloue_matrice(&mtest1, 15);
+        desalloue_matrice(&mtest2, 15);
+        return 1;
+    }
+    
+    if (equals(mtest1,mtest2,15)==1) //verification de la difference des 2 matrice (on ne veux pas 2 matrice egale!!)
+    {
+        desalloue_matrice(&mtest1, 15);
+        desalloue_matrice(&mtest2, 15);
+        return main();
+    }
+    mtesta = produit_matrice1( mtest1 , mtest2 , 15 ) ;
+    remplir_Sup( mtest1 , 15 ) ;
+    remplir_Inf( mtest2 , 15 ) ;
+    mtestb = produit_matrice2( mtest1 , mtest2 , 15 ) ;
+    if (equals(mtesta,mtestb,15)!=1)
+    {
+        printf("Erreur les 2 algo de produit donne pas le meme resultat!!\n");
+        desalloue_matrice(&mtest1, 15);
+        desalloue_matrice(&mtest2, 15);
+        desalloue_matrice(&mtesta, 15);
+        desalloue_matrice(&mtestb, 15);
+        return 0;
+    }
+    desalloue_matrice(&mtest1, 15);
+    desalloue_matrice(&mtest2, 15);
+    desalloue_matrice(&mtesta, 15);
+    desalloue_matrice(&mtestb, 15);
+    //Fin du jeu de test
+
     int n = 4 , v = 100 ;
     int **mat1 = alloue_matrice(n);
     int **mat2 = alloue_matrice(n) ;
