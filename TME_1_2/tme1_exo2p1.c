@@ -70,8 +70,16 @@ int main(){
     remplir_tableau(&tab, v, n );
     affiche_tableau(&tab, n ); // affiche le tableau 
 
-    printf("\n\nresultat 1 : %d\n",algo1(tab, n ));
-    printf("\n\nresultat 2 : %d\n",algo2(tab, n ));
+    if( algo1( tab , n) != algo2( tab , n) ){ //test si les resultats sont bons
+      desalloue_tableau(tab);
+      printf("\nLes résultats des calculs ne sont pas les memes !! ") ;
+      return 0 ;
+    }else{
+        printf("\n\nresultat 1 : %d\n",algo1(tab, n ));
+        printf("\n\nresultat 2 : %d\n",algo2(tab, n ));
+    }
+
+
 
     // petit test des temps cpu
     temps_initial1 = clock() ;
@@ -83,7 +91,6 @@ int main(){
     algo2(tab , n ) ;
     temps_final2 = clock() ;
     temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
-
 
     printf("\n\nCPU 1 : %f\n", temps1 );
     printf("\n\nCPU 2 : %f\n", temps2 );
