@@ -134,8 +134,8 @@ int main(){
     int **mtest2 = alloue_matrice(15);
     int **mtesta = NULL; 
     int **mtestb = NULL;
-    remplir_matrice( mtest1 , 15 , 200 );
-    remplir_matrice( mtest2 , 15 ,200 ) ;
+    remplir_Sup( mtest1 , 15 ) ;
+    remplir_Inf( mtest2 , 15 ) ;
     if (equals(mtest1,mtest1,15)!=1) //verification de l'algorithme de verif par experience temoin
     {
         printf("L'algorithme de verification est erroné!\n");
@@ -155,19 +155,6 @@ int main(){
     if (equals(mtesta,mtestb,15)!=1)
     {
         printf("Erreur les 2 algo de produit donne pas le meme resultat!!\n");
-        desalloue_matrice(&mtest1, 15);
-        desalloue_matrice(&mtest2, 15);
-        desalloue_matrice(&mtesta, 15);
-        desalloue_matrice(&mtestb, 15);
-        return 0;
-    }
-    remplir_Sup( mtest1 , 15 ) ;
-    remplir_Inf( mtest2 , 15 ) ;
-    mtesta = produit_matrice1( mtest1 , mtest2 , 15 ) ;
-    mtestb = produit_matrice2( mtest1 , mtest2 , 15 ) ;
-    if (equals(mtesta,mtestb,15)!=1)
-    {
-        printf("Erreur les 2 algo de produit en mode Triangulaire donne pas le meme resultat!!\n");
         desalloue_matrice(&mtest1, 15);
         desalloue_matrice(&mtest2, 15);
         desalloue_matrice(&mtesta, 15);

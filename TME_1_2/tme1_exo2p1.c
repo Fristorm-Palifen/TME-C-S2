@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#define N 20
+#define N 20 //variable qui servira pour 
 
 
 void alloue_tableau(int **t, int n){
