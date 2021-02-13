@@ -281,14 +281,13 @@ int main(){
       mat2 = alloue_matrice( n ) ;
       remplir_matrice( mat1 , n , v);
       remplir_matrice( mat2 , n , v );
+      remplir_Sup( mat1 , n ) ; 
+      remplir_Inf( mat2 , n ) ;
 
       temps_initial1 = clock() ;
       m = produit_matrice1( mat1 , mat2 , n );
       temps_final1 = clock() ;
       temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
-
-      remplir_Sup( mat1 , n ) ; 
-      remplir_Inf( mat2 , n ) ;
 
       temps_initial2 = clock() ;
       m2 = produit_matrice2( mat1 , mat2 , n ) ;
