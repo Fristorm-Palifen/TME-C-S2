@@ -59,6 +59,15 @@ int algo2(int *tab, int n){
     
 }
 
+int verifie_borne( int *tab, int n, int v){
+  for(int i = 0 ; i < n ; i++ ){
+    if ( tab[i] >= v ){
+      return 0 ;
+    }
+  }
+  return 1 ;
+}
+
 int main(){
     srand(time(NULL));
     unsigned long temps_initial1, temps_initial2, temps_final1, temps_final2 ;
@@ -68,6 +77,15 @@ int main(){
     int *tab = NULL ;
     alloue_tableau(&tab, n );
     remplir_tableau(&tab, v, n );
+
+    if( verifie_borne(tab , n , v ) == 0 ){
+      printf("La borne n'est pas respecté");
+      desalloue_tableau( tab ) ;
+      return 0;
+    }
+
+
+
     affiche_tableau(&tab, n ); // affiche le tableau 
 
     if( algo1( tab , n) != algo2( tab , n) ){ //test si les resultats sont bons

@@ -6,6 +6,7 @@
 
 int **alloue_matrice(int n ){
     int **tab = malloc( n *sizeof(int*));
+
     for(int i = 0 ; i < n ; i++ ){ // alloue toutes les cases du tableau de n cases
         tab[i] = (int *)malloc( n * sizeof(int *));
     }
@@ -13,6 +14,7 @@ int **alloue_matrice(int n ){
 }
 
 void desalloue_matrice( int ***tab , int n ){
+
     for(int i=0 ; i<n ;i++){ //parcourt la matrice
         int *temp=(*tab)[i];
         free(temp); // libere tous les tableaux contenus dans tab
