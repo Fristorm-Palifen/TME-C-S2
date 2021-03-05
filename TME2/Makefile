@@ -1,21 +1,23 @@
 CC=gcc
 CFLAGS=-W -Wall -ansi -pedantic
-LDFLAGS=
 EXEC=biblioLC
 
 all: main
 
-main: main.o biblioLC.o
-    gcc biblioLC.o main.o -o main
+main: biblioLC.o entreeSortieLC.o main.o
+  gcc -Wall -o main biblioLC.o entreeSortieLC.o main.o
+
+main.o: main.c entreeSortieLC.h
+  gcc -Wall -o main.o -c main.c
 
 biblioLC.o: biblioLC.c biblioLC.h
-    gcc -c biblioLC.c -o biblioLC.o
+  gcc -Wall -o biblioLC.o -c biblioLC.c
 
-biblioLC: biblioLC.o
-    $(CC) -o $@ $^ $(LDFLAGS)
+entreeSortieLC.o: entreeSortieLC.c entreeSortieLC.h
+  gcc -Wall -o entreeSortieLC.o -c entreeSortieLC.c
 
-%.o: %.c
-    $(CC) -o $@ -c $< $(CFLAGS)
+clear:
+  rm -f *.o
+  rm -f main
 
-clean:
-	rm -f *.o *~ $(PROGRAMS)
+
