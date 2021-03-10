@@ -166,17 +166,16 @@ BiblioH *recherche_auteurH(BiblioH *b, char *aut) { // cree une bibliotheque des
 
 	if (b != NULL) {
     BiblioH *bb = creer_biblioH(b->m); //creer la bibliotheque
+    int c = fonctionHachage( fonctionClef( aut ) , b->m ); // on prend la place de l'auteur grace à nos fonctions
+    LivreH *l = (b->T)[c];
 
-    for (int i = 0; i < b->m ; i++) { //parcours T
-        LivreH *l = (b->T)[i];
+    while ( l ) { // parcours les livres
 
-        while ( l ) { // parcours les livres
-
-            if(strcmp( l->auteur , aut ) == 0) { //si ce sont les memes auteurs
-                inserer(bb, l->num, l->titre, l->auteur); //on ajoute le livre a notre bibliotheque resultat
-            }l = l->suivant;
-        }
+        if(strcmp( l->auteur , aut ) == 0) { //si ce sont les memes auteurs
+            inserer(bb, l->num, l->titre, l->auteur); //on ajoute le livre a notre bibliotheque resultat
+        }l = l->suivant;
     }
+    
     return bb;
   }
 
@@ -186,34 +185,34 @@ BiblioH *recherche_auteurH(BiblioH *b, char *aut) { // cree une bibliotheque des
   }
 }
 
-int supprimer_ouvrageH( BiblioH *b , int numero, char *t, char *aut){
-  for(int i = 0; i < b->m; i++) {
+int supprimer_ouvrageH(BiblioH *b, int numero, char *t, char *aut) {
 
+    int cle = fonctionHachage(fonctionClef(aut ), b->m ); // prend la cle grace a aut
+    LivreH *l = b->T[cle]; // prend les livres de la case cle
 
-      if( b->T[i] != NULL ){
-        
-            LivreH *l=b->T[i] ;
-
-            if((l->num == numero ) && (strcmp(l->titre, t)==0) && (strcmp(l->auteur, aut)==0)){ // si c'est notre livre alors on supprime
-                b->T[i] = b->T[i]->suivant ;
-                liberer_livreH(l);
-                return 0;
-            }
-            else{
-
-                while(l->suivant){ // sinon on parcours les livres
-
-                    if((l->suivant->num == numero ) && (strcmp(l->suivant->titre, t)==0) && (strcmp(l->suivant->auteur, aut)==0)){ // si se sont les bons parametres on supprime
-                        LivreH *tmp = l->suivant->suivant ;
-                        liberer_livreH(l->suivant);
-                        l->suivant = tmp ;
-                        return 0;
-                    }
+    if( l == NULL ) { //si il n'y a pas de livre
+        return 1 ; // valeur d'echec
+    }
+    else {
+        if(l->num == numero && strcmp(l->titre, t) == 0) { //pas besoin de verifier aut==auteur car on se trouve dans la cle de auteur
+            b->T[cle] = b->T[cle]->suivant; //supprime en tete
+            liberer_livreH(l);
+            b->nE--;
+        }
+        else {
+            LivreH *tmp = l;
+            
+            while( l ) { //parcours les livres jusqu'à celui chercher
+                if(l->num == numero && strcmp(l->titre, t) == 0) {
+                    tmp->suivant = l->suivant;
+                    liberer_livreH(l); // supprime le livre
+                    return 0;
                 }
+                tmp = l;
+                l = l->suivant;
             }
         }
-    }return 1 ;
-
+    }
 }
 
 

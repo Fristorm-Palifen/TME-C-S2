@@ -236,12 +236,12 @@ int main(int argc, char** argv) {
     b2->m -= 20 ;
 
     temps_initial1 = clock() ;
-    recherche_ouvrage_num( b1 , 4000 ) ;
+    recherche_ouvrage_titre( b1 , "DRYGXRXKFHICAINHW" ) ;
     temps_final1 = clock() ;
     temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
 
     temps_initial2 = clock() ;
-    recherche_ouvrage_numH( b2 , 4000 );
+    recherche_ouvrage_titreH( b2 , "DRYGXRXKFHICAINHW" );
     temps_final2 = clock() ;
     temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
     fprintf(f6 ,"%d %f %f\n",b2->m, temps1,temps2);
@@ -257,12 +257,12 @@ int main(int argc, char** argv) {
     b2->m += 20 ;
 
     temps_initial1 = clock() ;
-    recherche_ouvrage_num( b1 , 4000 ) ;
+    recherche_ouvrage_titre( b1 , "DRYGXRXKFHICAINHW" ) ;
     temps_final1 = clock() ;
     temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
 
     temps_initial2 = clock() ;
-    recherche_ouvrage_numH( b2 , 4000 );
+    recherche_ouvrage_titreH( b2 , "DRYGXRXKFHICAINHW" );
     temps_final2 = clock() ;
     temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
     fprintf(f7 ,"%d %f %f\n",b2->m, temps1,temps2);
@@ -277,6 +277,12 @@ int main(int argc, char** argv) {
 
 
   //=========================================================================
+
+
+
+
+
+
 
 
   
