@@ -1,23 +1,30 @@
-CC=gcc
-CFLAGS=-W -Wall -ansi -pedantic
-EXEC=biblioLC
 
-all: main
+all : prog
 
-main: biblioLC.o entreeSortieLC.o main.o
-  gcc -Wall -o main biblioLC.o entreeSortieLC.o main.o
 
-main.o: main.c entreeSortieLC.h
-  gcc -Wall -o main.o -c main.c
-
-biblioLC.o: biblioLC.c biblioLC.h
-  gcc -Wall -o biblioLC.o -c biblioLC.c
+main.o: main.c
+    gcc -c main.c
 
 entreeSortieLC.o: entreeSortieLC.c entreeSortieLC.h
-  gcc -Wall -o entreeSortieLC.o -c entreeSortieLC.c
+    gcc -c entreeSortieLC.c
 
-clear:
-  rm -f *.o
-  rm -f main
+biblioLC.o: biblioLC.c biblioLC.h
+    gcc -c biblioLC.c
+
+prog: main.o entreeSortieLC.o biblioLC.o entreeSortieH.o biblioH.o entreeSortieLC.h biblioLC.h entreeSortieH.h biblioH.h
+    gcc -o prog main.o entreeSortieLC.o biblioLC.o entreSortieH.o biblioH.o
+
+entreeSortieH.o: entreeSortieH.c entreeSortieH.h
+    gcc -c entreeSortieH.c
+
+biblioH.o: biblioH.h biblioH.c
+    gcc -c biblioH.c
+
+
+clean:
+    rm *.o; rm prog
+
+
+
 
 

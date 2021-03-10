@@ -28,9 +28,10 @@ Biblio *charger_n_entrees(char *nomfic, int n) {
 
 void enregistrer_biblio(Biblio *b, char *nomfic){
   FILE *f = fopen( nomfic , "w" ) ;
-  while( b->L){
-    fprintf( f , "%d %s %s\n" , b->L->num , b->L->titre , b->L->auteur );
-    b->L=b->L->suiv ;
+  Biblio *tmp= b;
+  while( tmp->L){
+    fprintf( f , "%d %s %s\n" , tmp->L->num , tmp->L->titre , tmp->L->auteur );
+    tmp->L=tmp->L->suiv ;
   }
   fclose( f ) ;
 }
