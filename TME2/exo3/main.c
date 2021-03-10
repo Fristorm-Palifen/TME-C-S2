@@ -278,10 +278,48 @@ int main(int argc, char** argv) {
 
   //=========================================================================
 
+  /*
+  FILE *f8 = fopen("auteur_augmente_taille_hachage.txt","w");
+  for(int i = 0 ; i < 100 ; i++ ){ // on augmente la taille à chaque iterations
+    b2->m += 1 ;
+
+    temps_initial1 = clock() ;
+    recherche_auteur( b1 , "lkq" ) ;
+    temps_final1 = clock() ;
+    temps1 = ((double)(temps_final1 - temps_initial1)) / CLOCKS_PER_SEC ;
+
+    temps_initial2 = clock() ;
+    recherche_auteurH( b2 , "lkq" );
+    temps_final2 = clock() ;
+    temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
+    fprintf(f8 ,"%d %f %f\n",b2->m, temps1,temps2);
+
+  }fclose(f8);*/
 
 
+  //3.3
+  printf("\n\n\n3.3\n\n\n");
+  FILE *f9 = fopen("recherche_ouvrages.txt","w") ;
+  for(int n = 1000; n <= 50000; n += 1000) {
+    b1 = charger_n_entrees(argv[1], n);
+    b2 = charger_n_entreesH(argv[1], n);
 
+    temps_initial1 = clock();
+    bb1 = ouvrage_identique(b1);
+    temps_final1 = clock();
+    temps1 = ((double) (temps_final1 - temps_initial1)) / CLOCKS_PER_SEC;
 
+    temps_initial2 = clock();
+    bb2 = ouvrage_identiqueH(b2);
+    temps_final2 = clock();
+    temps2 = ((double) (temps_final2 - temps_initial2)) / CLOCKS_PER_SEC;
+
+    fprintf(f9, "%d %f %f\n", n, temps1, temps2);
+    liberer_biblio(b1);
+    liberer_biblio(bb1);
+    liberer_biblioH(b2);
+    liberer_biblioH(bb2);
+  }
 
 
 
