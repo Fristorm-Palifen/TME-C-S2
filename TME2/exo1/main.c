@@ -8,7 +8,7 @@
 
 void menu() { // presente les choix à l'utilisateur
   printf("\e[1;92m");
-  printf("Bienvenue sur le mini Projet 2 de Theophane et Francois-Xavier\nVous allez devoir choisir entre plusieurs options afin de naviguer dans le programme.\n\n");
+  printf("Bienvenue sur le mini Projet 2 de Theophane et Francois-Xavier\nEXERCICE 1 :\n\nVous allez devoir choisir entre plusieurs options afin de naviguer dans le programme.\n\n");
   printf("\e[1;36m");
   printf("\nPour creer une bibiliotheque tapez 0\nPour ajouter un Livre a la bibliotheque tapez 1 \nPour Afficher une biblioteque tapez 2\nPour rechercher un ouvrage par son numero tapez 3 \nPour rechercher un ouvrage par son titre tapez 4\nPour rechercher de tous les livres d’un meme auteur tapez 5 \nPour supprimer un ouvrage tapez 6 \nPour fusionner deux bibliotheques tapez 7 \nPour rechercher tous les ouvrages avec plusieurs exemplaires tapez 8");
   printf("\e[1;31m");
