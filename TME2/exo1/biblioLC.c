@@ -12,6 +12,7 @@ Livre *creer_livre(int num,char *titre,char *auteur){ // cree un livre avec les 
     return NULL ;
   }
   
+  //initialise les attributs du livre
   l->num = num ;
   l->titre = strdup(titre) ;
   l->auteur = strdup(auteur) ;
@@ -22,8 +23,8 @@ Livre *creer_livre(int num,char *titre,char *auteur){ // cree un livre avec les 
 }
 
 void liberer_livre(Livre *l) { // libere la memoire de l
-  if( l != NULL ){
-    free( l->titre );
+  if( l != NULL ){ // si l n'est pas déjà vide
+    free( l->titre ); // on libere la mémoire de tous les pointeurs
     free( l->auteur );
     free( l ) ;
 
@@ -54,8 +55,8 @@ void liberer_biblio(Biblio *b){ // libere la memoire de la biblio
 
 void inserer_en_tete(Biblio* b,int numero,char* t,char* aut){ // ajoute un livre avec ces attributs à la bibliotheque
     Livre* l = creer_livre( numero , t , aut ); // cree le livre
-    l->suiv = b->L; // l'ajoute en tete
-    b->L = l;
+    l->suiv = b->L; // ajoute à suiv les livres de  la bibliotheque
+    b->L = l; // et remplace les livres de b par notre nouvelle chaine de charactere l
 }
 
 
@@ -78,13 +79,13 @@ void affiche_biblio(Biblio *b){ // affiche les livres d'une bibliotheque
 
 int recherche_ouvrage_num(Biblio *b, int numero){ // affiche un livre enfonction de son num si il est present dans la bibliotheque
 
-  if( b != NULL ){
-    Livre *l = b->L ;
+  if( b != NULL ){ //si la biblio n'est pas vide
+    Livre *l = b->L ; // variable temporaire pour ne pas perdre les livres
 
     while( l ){
       if( l->num == numero ){ // si le num du livre est egale a numero alors c'est celui qu'on cherche
         affiche_livre( l ) ; //on l'affiche
-        return 0 ;
+        return 0 ; // on sort si on trouve le livre
       }
       l = l->suiv ;
     }
@@ -96,19 +97,19 @@ int recherche_ouvrage_num(Biblio *b, int numero){ // affiche un livre enfonction
 
 int recherche_ouvrage_titre(Biblio *b, char *t){ // meme fonctionnement qu'avant mais avec un titre
 
-    if( b != NULL ){
-    Livre *l = b->L ;
+    if( b != NULL ){ // si non vide
+    Livre *l = b->L ; // variable temporaire pour ne pas perdre les livres
 
     while( l ){
       if( strcmp( l->titre , t) == 0 ){ // on utilise donc strcmp pour des chaines de characteres
         affiche_livre( l ) ;
-        return 0 ;
+        return 0 ; // sort si on trouve le livre
       }
       l = l->suiv ;
     }
   }
 
-  printf("\nLivre %s non trouve\n", t);
+  printf("\nLivre %s non trouve\n", t); // si on arrive ici c'est qu'on a pas trouvé le livre
   return 1 ;
   
 }
@@ -135,13 +136,13 @@ Biblio *recherche_auteur(Biblio *b, char *aut){ // retourne une bibliotheque ave
 
 int supprimer_ouvrage(Biblio *b , int numero , char *t , char *aut){ // cherche le livre avec ces parametres dans b pour le liberer
 
-    if( b!=NULL ){
+    if( b!=NULL ){ // si biblio non vide
         
-        if( b->L!=NULL ){
-            Livre *l=b->L;
+        if( b->L!=NULL ){ // si livre 
+            Livre *l=b->L; // variable temporaire pour ne pas perdre les données
 
             if((l->num == numero ) && (strcmp(l->titre, t)==0) && (strcmp(l->auteur, aut)==0)){ // si c'est notre livre alors on supprime
-                b->L = b->L->suiv;
+                b->L = b->L->suiv; // pour ne pas perdre les livres suivants
                 liberer_livre(l);
                 return 0;
             }
@@ -150,8 +151,8 @@ int supprimer_ouvrage(Biblio *b , int numero , char *t , char *aut){ // cherche 
                 while(l->suiv){ // sinon on parcours les livres
 
                     if((l->suiv->num == numero ) && (strcmp(l->suiv->titre, t)==0) && (strcmp(l->suiv->auteur, aut)==0)){ // si se sont les bons parametres on supprime
-                        Livre *tmp = l->suiv->suiv;
-                        liberer_livre(l->suiv);
+                        Livre *tmp = l->suiv->suiv; // pour ne pas perdre la liste
+                        liberer_livre(l->suiv); // supprime le livre
                         l->suiv = tmp ;
                         return 0;
                     }

@@ -6,7 +6,7 @@
 #include <time.h>
 #include <unistd.h>
 
-void menu() { // presente les choix à l'utilisateur
+void menu() { // affiche sur la console les actions possibles sur la bibliotheques
   printf("\e[1;92m");
   printf("Bienvenue sur le mini Projet 2 de Theophane et Francois-Xavier\nEXERCICE 1 :\n\nVous allez devoir choisir entre plusieurs options afin de naviguer dans le programme.\n\n");
   printf("\e[1;36m");
@@ -21,53 +21,53 @@ void menu() { // presente les choix à l'utilisateur
 
 
 int main(int argc, char** argv) {
-  if (argc !=3){
+  if (argc !=3){ // verifie que le nombre d'argument est respecter
     printf("\e[1;31m");
     printf("\n\n\nLe nombre d'arguments n'est pas bon!!\n\n\n");
     printf("\e[0m");
     return 1;
   }
-  Biblio *b = charger_n_entrees( argv[1] , atoi(argv[2]) ) ; // cree une bibliotheque de reference pour faire quelques tests avec
+  Biblio *b = charger_n_entrees( argv[1] , atoi(argv[2]) ) ; // bibliotheque de reference
   int fin =0;
   do{
 
-    menu();
+    menu(); //affiche les options
     int choix_menu;
     char buffer[256];
 
     char fichier[30] ;
     fflush(stdin);
-    fgets(buffer, 256, stdin); 
+    fgets(buffer, 256, stdin); //recupere la demande de l'utilisateur sur le clavier
     sscanf(buffer, "%1d", &choix_menu);
     printf("\n");
-    fflush(stdin);
+    fflush(stdin); // nettoie
     
-    switch(choix_menu){ //traite chaque cas {0..8}
-      case 0:
+    switch(choix_menu){
+      case 0: //creer une binliotheque
         printf("Vous avez choisi de creer une bibliotheque\n");
         printf("\nVous allez creer une bibliotheque de n lignes à partir du fichier %s",argv[1] ) ;
         fflush(stdin);
         int nlignes ;
-        printf("\nentreer le nombre de lignes : "); // demande à l'utilisateur combien de lignes il souhaite
+        printf("\nentreer le nombre de lignes : ");//on demande d'entreer le nombre de lignes/livres souhaiter pour la bibliotheque
         fgets(buffer , 256, stdin ) ;
         sscanf( buffer , "%6d", &nlignes ) ;
-        Biblio *bb = charger_n_entrees( argv[1] , nlignes ) ;
-        affiche_biblio( bb ) ;
+        Biblio *bb = charger_n_entrees( argv[1] , nlignes ) ; // et on crée la bibliotheque en fonction du choix
+        affiche_biblio( bb ) ; //affiche la nibliotheque créer
 
-        char rep[1] ; // permet de sauvegarder les donnees de la bibliotheque créer dans un fichier si l'utilisateur le souhaite
-        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]?");
+        char rep[1] ;
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]?"); //demande si il souhaite enregistrer cette bibliotheque dans un fichier
         fgets( buffer , 256 , stdin );
         sscanf( buffer , "%s" , rep );
         fflush(stdin);
 
-        if( strcmp( rep , "Y") == 0 ){
+        if( strcmp( rep , "Y") == 0 ){ //si Y alors on sauvegarde
 
           printf("\nDans quel fichier souhaitez-vous sauvegarder votre bibiliotheque ?\n");
-          fgets(buffer , 256 , stdin ) ;
+          fgets(buffer , 256 , stdin ) ; //demande le nom du fichier souhaiter
           sscanf( buffer , "%s" , fichier );
           fflush(stdin) ;
 
-          enregistrer_biblio( bb , fichier );
+          enregistrer_biblio( bb , fichier ); //écrit la biliotheque dans le fichier
           printf("\nLa bibliotheque a ete sauvegarder dans %s\n",fichier);
         }
 
@@ -75,9 +75,10 @@ int main(int argc, char** argv) {
         liberer_biblio( bb ) ;
         break;
 
-      case 1:
-        printf("Vous avez choisi d'ajouter un livre a la bilbiotheque");
+      case 1: // ajouter un livre à la bibliotheque de reference
+        printf("Vous avez choisi d'ajouter un livre\n");
         printf("\nChoisir quel livre ajouter") ;
+        //demande les attributs du livre à l'utilisateur
 
         char auteur[30], titre[30] ; int numero ;
         char buffer[256] ;
@@ -101,10 +102,10 @@ int main(int argc, char** argv) {
 
         printf("\nnum=%d , titre=%s , auteur=%s\n\n",numero,titre,auteur);
 
-        inserer_en_tete( b , numero , titre , auteur ) ;
+        inserer_en_tete( b , numero , titre , auteur ) ; //ajoute le livre
         affiche_biblio( b ) ;
 
-        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? "); //demande de sauvegarde, car modification sur la bibliotheque
         fgets( buffer , 256 , stdin );
         sscanf( buffer , "%s" , rep );
         fflush(stdin);
@@ -122,44 +123,45 @@ int main(int argc, char** argv) {
         
 
         break;
-      case 2:
-        printf("Affichage : \n");
+      case 2: //afficher la bibliotheque de reference
+        printf("Affichage :\n");
         affiche_biblio( b );
         break;
-      case 3:
 
-        printf("Vous avez choisi de chercher un livre par son numero");
+      case 3: //chercher un livre avec son num
+
+        printf("Vous allez chercher un livre avec son numero");
         fflush(stdin);
-        printf("\nentreer le numero : ") ;
+        printf("\nentreer le numero : ") ; //demande le numero
         fgets(buffer, 256, stdin);
         sscanf(buffer, "%6d", &numero);
         printf("\n");
 
-        recherche_ouvrage_num( b, numero) ;
+        recherche_ouvrage_num( b, numero) ; //cherche le livre
 
         break;
-      case 4:
+      case 4: // cherche un livre avec son titre
 
-        printf("Vous avez choisi de chercher un livre par son titre");
-        printf("\nentreer le titre : ");
+        printf("Vous allez chercher un livre par son titre");
+        printf("\nentreer le titre : "); //demande le titre
         fflush(stdin);
         fgets(buffer, 256, stdin) ;
         sscanf(buffer, "%100s", titre) ;
 
-        recherche_ouvrage_titre( b , titre ) ;
+        recherche_ouvrage_titre( b , titre ) ; //cherche le livre
 
         break;
-      case 5:
+      case 5: //cherche les livres d'un auteur
 
-        printf("Vous avez choisi de cherche tous les livres d'un auteur");
-        printf("\nentreer l'auteur : ") ;
+        printf("Vous alle chercher les livres d'un auteur");
+        printf("\nentreer l'auteur : ") ; //demande l'auteur
         fflush(stdin);
         fgets( buffer ,256 ,stdin) ;
         sscanf( buffer , "%100s", auteur) ;
-        bb = recherche_auteur( b , auteur ) ;
-        affiche_biblio( bb ) ;
+        bb = recherche_auteur( b , auteur ) ; //on prend la bibliotheque resultat
+        affiche_biblio( bb ) ; //on l'affiche
 
-        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? "); //demande de sauvegarde
         fgets( buffer , 256 , stdin );
         sscanf( buffer , "%s" , rep );
         fflush(stdin);
@@ -177,8 +179,10 @@ int main(int argc, char** argv) {
         liberer_biblio( bb ) ;
 
         break;
-      case 6:
-        printf("Vous avez choisi de supprimer un livre");
+      case 6: //supprimer un livre
+        printf("Vous alle supprimer un livre");
+
+        //demande les attributs du livre
   
         printf("\nentrer le numero : ");
         fgets( buffer , 256 , stdin ) ;
@@ -197,10 +201,10 @@ int main(int argc, char** argv) {
 
         printf("\nnum = %d , titre = %s , auteur = %s\n",numero,titre,auteur);
         
-        supprimer_ouvrage( b , numero , titre , auteur );
-        affiche_biblio( b ) ;
+        supprimer_ouvrage( b , numero , titre , auteur ); //cherche à supprimer le livre
+        affiche_biblio( b ) ; //affiche la bibliotheque sans le livre
 
-        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");//demande de sauvegarde car modification sur la bibliotheque
         fgets( buffer , 256 , stdin );
         sscanf( buffer , "%s" , rep );
         fflush(stdin);
@@ -218,27 +222,28 @@ int main(int argc, char** argv) {
 
         
         break;
-      case 7:
-        printf("Vous avez choisi de fusionner deux bibliotheques");
+      case 7://fusionner 2 bibliotheques
+        printf("Vous allez fusinner deux bibliotheques");
 
         printf("\nTout d'abord, nous allons creer une bibliotheque de n lignes à partir du fichier %s pour la faire fusionner avec notre bibliotheque de reference\n",argv[1] ) ;
         fflush(stdin);
-        printf("\nentreer le nombre de lignes : ");
+        //crée une biblio pour la fusionner à celle de reference
+        printf("\nentreer le nombre de lignes : ");//demande donc le nombre de lignes
         fgets(buffer , 256, stdin ) ;
         sscanf( buffer , "%6d", &nlignes ) ;
         bb = charger_n_entrees( argv[1] , nlignes ) ;
 
         printf("\nVoici nos deux bibliotheques :\n");
-
+        //affiche les deux bibliotheques
         affiche_biblio( b ) ;printf("\n\n");
         affiche_biblio( bb ) ;
         printf("\nNous allons maintenant les fusionner :\n");
-        fusion( b , bb ) ;
+        fusion( b , bb ) ;//les fusionne
 
         printf("\nResultat de la fusion :\n");
-        affiche_biblio( b );
+        affiche_biblio( b );//affiche le resultat
 
-        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");//demande de sauvegarde
         fgets( buffer , 256 , stdin );
         sscanf( buffer , "%s" , rep );
         fflush(stdin);
@@ -255,11 +260,27 @@ int main(int argc, char** argv) {
         }
 
         break;
-      case 8:
-        printf("\nVous avez choisi de chercher les ouvrages identiques\n");
+      case 8://cherche exemplaires identiques
+        printf("\nVous avez choisi d'avoir les livres en doubles\n");
         
-        bb = ouvrage_identique( b ) ;
-        affiche_biblio( bb ) ;
+        bb = ouvrage_identique( b ) ; // sort la bibliotheque resultat
+        affiche_biblio( bb ) ; // l'affiche
+
+        printf("\nVoulez-vous sauvegarder cette bibiliotheque [Y/N]? ");//demande de sauvegarde
+        fgets( buffer , 256 , stdin );
+        sscanf( buffer , "%s" , rep );
+        fflush(stdin);
+
+        if( strcmp( rep , "Y") == 0 ){
+          
+          printf("\nDans quel fichier souhaitez-vous sauvegarder votre bibiliotheque ?\n");
+          fgets(buffer , 256 , stdin ) ;
+          sscanf( buffer , "%s" , fichier );
+          fflush(stdin) ;
+
+          enregistrer_biblio( bb , fichier );
+          printf("\nLa bibliotheque a ete sauvegarder dans %s\n",fichier);
+        }
 
         liberer_biblio( bb ) ;
 
@@ -268,7 +289,7 @@ int main(int argc, char** argv) {
         printf("\nMerci et aurevoir\n\n");
         fin=1;
         break;
-      default:
+      default://si erreur de saisie
         printf("Erreur, Veuillez relancer le programme\n");
         fin=1;
         break;
@@ -278,6 +299,7 @@ int main(int argc, char** argv) {
     if (fin==1){ break;}
     printf("\n\n");
   }while(1);
+
   liberer_biblio( b ) ;
 
 

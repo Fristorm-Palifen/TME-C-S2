@@ -15,6 +15,7 @@ typedef struct { /* Tete fictive */
   Livre * L ; /* Premier element */
 } Biblio ;
 
+//def des fonctions de biblioLC.c
 Livre *creer_livre(int num,char *titre,char *auteur);
 void liberer_livre(Livre *l);
 Biblio *creer_biblio();

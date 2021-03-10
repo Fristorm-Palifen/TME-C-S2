@@ -18,13 +18,14 @@ int fonctionClef(char* auteur){ // permet d'avoir la cle
 
 LivreH *creer_livreH(int numero, char *t, char *aut) { // cree un livre H
 
-    LivreH *l = (LivreH *)malloc(sizeof(LivreH));
+    LivreH *l = (LivreH *)malloc(sizeof(LivreH)); //alloue la memoire
 
-    if(l == NULL) {
+    if(l == NULL) { // probleme d'allocation
       printf("\nrip\n");
         return NULL;
     }
 
+    //initialise les attributs
     l->num = numero ;
     l->titre = strdup(t);
     l->auteur = strdup(aut);
@@ -35,18 +36,19 @@ LivreH *creer_livreH(int numero, char *t, char *aut) { // cree un livre H
 }
 
 void liberer_livreH(LivreH* l) { // libere la memoire du livre H
-  free( l->titre );
+  free( l->titre ); // libere la memoire
   free( l->auteur );
   free( l ) ;
 }
 
 BiblioH *creer_biblioH(int m){ // cree la bibliotheque H
   BiblioH *b = malloc(sizeof(BiblioH));
-  if( b==NULL ){
+  if( b==NULL ){ // probleme d'allocation
     printf("\nErreur d'allocation\n");
     return NULL ;
   }
 
+  //initialise les attributs
   b-> m = m ;
   b->nE = 0 ; // 0 elements à la base
   b->T = malloc(sizeof(LivreH *)*m);
@@ -64,17 +66,18 @@ BiblioH *creer_biblioH(int m){ // cree la bibliotheque H
 
 void liberer_biblioH(BiblioH *b){ // libere la mémoire de la bibliotheque
   
-  for(int i = 0 ; i < b->m ; i++) {
+  for(int i = 0 ; i < b->m ; i++) { // parcours T
 
       LivreH *l = b->T[i];
 
       while( l ){ // parcours les livres
         LivreH *tmp = l->suivant;
-        liberer_livreH( l ) ;
+        liberer_livreH( l ) ; // libere chaque livres de T
         l = tmp;
       }
 
   }
+  // libere T et b
   free(b->T);
   free( b );
 
@@ -102,10 +105,12 @@ void affiche_livreH(LivreH *l) { // affiche le livre
     
 void affiche_biblioH(BiblioH* b) { // affiche la bibliotheque
 
-  if( b != NULL ){
-    for (int i = 0; i < b->m ; i++) {
-        LivreH *l = (b->T)[i];
-        while( l ) {
+  if( b != NULL ){//si b non vide
+
+    for (int i = 0; i < b->m ; i++) {// parcours T
+        LivreH *l = (b->T)[i]; // pour ne pas perdre nos données
+
+        while( l ) { //affiche la liste des livres
             affiche_livreH( l );
             l = l->suivant;
         }
@@ -118,17 +123,19 @@ void affiche_biblioH(BiblioH* b) { // affiche la bibliotheque
 int recherche_ouvrage_numH(BiblioH *b, int numero) { // affiche le livre trouver avec ce numero
 
   if( b != NULL ){
-    for (int i = 0; i < b->m ; i++) {
+
+    for (int i = 0; i < b->m ; i++) { //parcours T
         LivreH *l = (b->T)[i];
-        while ( l ) {
-            if( l->num == numero ) {
+
+        while ( l ) { //parcours tous les livres
+            if( l->num == numero ) { //si c'est le numero qu'on cherche
                 affiche_livreH( l ) ;
                 return 0 ;
             }
             l = l->suivant;
         }
     }
-  }
+  }//passé ici c'est que l'on a pas trouvé
   printf("\nLivre %d non trouve\n",numero);
   return 1;
 }
@@ -139,11 +146,11 @@ int recherche_ouvrage_titreH(BiblioH *b, char *t) { // affiche le livre trouver 
 
   if( b != NULL ){
 
-    for (int i = 0; i < b->m ; i++) {
+    for (int i = 0; i < b->m ; i++) {//parcours T
         LivreH *l = (b->T)[i];
 
-        while ( l ) {
-            if( strcmp( l->titre , t) == 0 ) {
+        while ( l ) {//parcours les livres
+            if( strcmp( l->titre , t) == 0 ) { // si ce sont les memes titres
                 affiche_livreH( l );
                 return 0 ;
             }
@@ -151,42 +158,74 @@ int recherche_ouvrage_titreH(BiblioH *b, char *t) { // affiche le livre trouver 
         }
     }
   }
-  printf("\nLivre %s non trouve\n", t);
+  printf("\nLivre %s non trouve\n", t); //titre non trouver
   return 1 ;
 }
 
 BiblioH *recherche_auteurH(BiblioH *b, char *aut) { // cree une bibliotheque des livres de cette auteur
 
 	if (b != NULL) {
-    BiblioH *bb = creer_biblioH(b->m);
+    BiblioH *bb = creer_biblioH(b->m); //creer la bibliotheque
 
-    for (int i = 0; i < b->m ; i++) {
-        LivreH *l = (b->T)[i];
+    //for (int i = 0; i < b->m ; i++) { //parcours T
+        int c = fonctionHachage( fonctionClef( aut ) , b->m );
+        LivreH *l = (b->T)[c];
 
-        while ( l ) {
+        while ( l ) { // parcours les livres
 
-            if(strcmp( l->auteur , aut ) == 0) {
-                inserer(bb, l->num, l->titre, l->auteur);
+            if(strcmp( l->auteur , aut ) == 0) { //si ce sont les memes auteurs
+                inserer(bb, l->num, l->titre, l->auteur); //on ajoute le livre a notre bibliotheque resultat
             }l = l->suivant;
         }
-    }
+    //}
     return bb;
   }
+
   else{
     printf("\nBibliotheque vide\n");
     return NULL ;
   }
 }
 
+int supprimer_ouvrageH( BiblioH *b , int numero, char *t, char *aut){
+  for(int i = 0; i < b->m; i++) {
+
+
+      if( b->T[i] != NULL ){
+        
+            LivreH *l=b->T[i] ;
+
+            if((l->num == numero ) && (strcmp(l->titre, t)==0) && (strcmp(l->auteur, aut)==0)){ // si c'est notre livre alors on supprime
+                b->T[i] = b->T[i]->suivant ;
+                liberer_livreH(l);
+                return 0;
+            }
+            else{
+
+                while(l->suivant){ // sinon on parcours les livres
+
+                    if((l->suivant->num == numero ) && (strcmp(l->suivant->titre, t)==0) && (strcmp(l->suivant->auteur, aut)==0)){ // si se sont les bons parametres on supprime
+                        LivreH *tmp = l->suivant->suivant ;
+                        liberer_livreH(l->suivant);
+                        l->suivant = tmp ;
+                        return 0;
+                    }
+                }
+            }
+        }
+    }return 1 ;
+
+}
+
 
 
 void fusionH(BiblioH* b1, BiblioH* b2) { // fusionne deux bibliotheques H
   
-  for (int i = 0; i<b2->m; i++) {
+  for (int i = 0; i<b2->m; i++) { // parcours T
       LivreH *l = (b2->T)[i];
 
-      while( l ) {
-          inserer(b1, l->num, l->titre, l->auteur);
+      while( l ) { //parcours les livres
+          inserer(b1, l->num, l->titre, l->auteur); //ajoute les livres de b2 dans b1
           l = l->suivant;
       }
   }
@@ -198,26 +237,27 @@ void fusionH(BiblioH* b1, BiblioH* b2) { // fusionne deux bibliotheques H
 
 BiblioH *ouvrage_identiqueH(BiblioH *b){ // retourne une bibliotheque avec les livres identiques dans b
     BiblioH* bb = creer_biblioH(b->m);
-    if( bb == NULL ){
+    if( bb == NULL ){ // si bibliotheque vide
       return NULL ;
     }
 
-    for (int i = 0; i < b->m ; i++) {
+    for (int i = 0; i < b->m ; i++) {//parcours T
         LivreH *l1 = (b->T)[i];
 
-        while ( l1 ) {  
+        while ( l1 ) {   // parcours les livres
                 LivreH *l2 = (b->T)[i] ;
 
-                while( l2 ) {
+                while( l2 ) { // re parcours les livres
 
-                    if( l1 != l2 && strcmp( l1->titre , l2->titre ) == 0 && strcmp( l1->auteur , l2->auteur ) == 0) {
-                        inserer(bb, l1->num, l1->titre, l1->auteur);
+                    if( l1 != l2 && strcmp( l1->titre , l2->titre ) == 0 && strcmp( l1->auteur , l2->auteur ) == 0) { // si ce n'est pas le meme livre mais qu'ils ont les memes attributs
+
+                        inserer(bb, l1->num, l1->titre, l1->auteur); // on ajoute le livre à notre bibliotheque resultat
                         break ;
                     }
                     l2 = l2->suivant;
                 }
             
-            l1 = l1->suivant;
+            l1 = l1->suivant; // on continu d'avancer
         }
     }
     return bb;
