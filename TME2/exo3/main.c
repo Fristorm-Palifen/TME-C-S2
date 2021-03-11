@@ -278,7 +278,7 @@ int main(int argc, char** argv) {
 
   //=========================================================================
 
-  /*
+  //pour auteur
   FILE *f8 = fopen("auteur_augmente_taille_hachage.txt","w");
   for(int i = 0 ; i < 100 ; i++ ){ // on augmente la taille à chaque iterations
     b2->m += 1 ;
@@ -294,7 +294,8 @@ int main(int argc, char** argv) {
     temps2 = ((double)(temps_final2 - temps_initial2)) / CLOCKS_PER_SEC ;
     fprintf(f8 ,"%d %f %f\n",b2->m, temps1,temps2);
 
-  }fclose(f8);*/
+  }fclose(f8);
+  //=========================================================================
 
 
   //3.3
